@@ -153,6 +153,13 @@ button:focus-visible {
 .planner-section {
   display: grid;
   gap: 0.55rem;
+  grid-column: 1 / -1;
+}
+
+.legend-card {
+  align-self: start;
+  justify-self: start;
+  width: min(100%, 260px);
 }
 
 .planner-topbar {
@@ -170,10 +177,10 @@ button:focus-visible {
 
 .weekly-board {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(7, minmax(190px, 1fr));
   gap: 0.65rem;
   align-items: start;
-  overflow-x: visible;
+  overflow-x: auto;
   padding-bottom: 0.25rem;
 }
 
@@ -310,6 +317,11 @@ button:focus-visible {
   .app {
     grid-template-columns: 1fr;
   }
+
+  .legend-card {
+    width: 100%;
+    justify-self: stretch;
+  }
 }
 
 @media (max-width: 600px) {
@@ -328,8 +340,8 @@ button:focus-visible {
   }
 
   .weekly-board {
-    grid-template-columns: 1fr;
-    overflow-x: visible;
+    grid-template-columns: repeat(7, minmax(200px, 1fr));
+    overflow-x: auto;
   }
 
   .day-column {
