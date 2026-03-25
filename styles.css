@@ -31,7 +31,7 @@ body {
   margin: 0 auto;
   padding: 1rem;
   display: grid;
-  grid-template-columns: minmax(260px, 360px) 1fr;
+  grid-template-columns: minmax(420px, 1fr) minmax(360px, 1fr);
   grid-template-areas:
     "header header"
     "planner planner"
@@ -71,11 +71,26 @@ body {
 .form-card {
   grid-area: form;
   align-self: start;
+  width: 100%;
+  justify-self: stretch;
 }
 
 .task-form {
   display: grid;
-  gap: 0.85rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.task-form label:first-child {
+  grid-column: 1 / -1;
+}
+
+.task-form > label {
+  min-width: 0;
+}
+
+.task-form > .btn {
+  align-self: end;
 }
 
 label {
@@ -164,8 +179,8 @@ button:focus-visible {
 .legend-card {
   grid-area: legend;
   align-self: start;
-  justify-self: start;
-  width: min(100%, 420px);
+  justify-self: stretch;
+  width: 100%;
 }
 
 .legend-grid {
@@ -430,6 +445,14 @@ button:focus-visible {
       "planner"
       "form"
       "legend";
+  }
+
+  .task-form {
+    grid-template-columns: 1fr;
+  }
+
+  .task-form label:first-child {
+    grid-column: auto;
   }
 
   .legend-card {
