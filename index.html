@@ -45,13 +45,32 @@
             <select id="task-status" name="status" required></select>
           </label>
 
+          <label>
+            Payment (£)
+            <input
+              id="task-payment"
+              name="payment"
+              type="number"
+              min="0"
+              step="1"
+              placeholder="e.g. 5"
+              required
+            />
+          </label>
+
           <button type="submit" class="btn btn-primary">Add task</button>
         </form>
       </section>
 
       <section class="card legend-card" aria-labelledby="legend-title">
         <h2 id="legend-title">Family Colors</h2>
-        <ul id="legend" class="legend-list" aria-label="Family member color legend"></ul>
+        <div class="legend-grid">
+          <ul id="legend" class="legend-list" aria-label="Family member color legend"></ul>
+          <section class="earnings-panel" aria-labelledby="earnings-title">
+            <h3 id="earnings-title">Earnings (Done)</h3>
+            <ul id="earnings" class="earnings-list" aria-label="Family member earnings"></ul>
+          </section>
+        </div>
       </section>
 
       <section class="planner-section">
@@ -94,6 +113,10 @@
           <label>
             Day
             <select class="task-day-select"></select>
+          </label>
+          <label>
+            Payment (£)
+            <input class="task-payment-input" type="number" min="0" step="1" />
           </label>
         </div>
       </article>

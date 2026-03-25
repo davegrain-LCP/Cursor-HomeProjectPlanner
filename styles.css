@@ -159,7 +159,48 @@ button:focus-visible {
 .legend-card {
   align-self: start;
   justify-self: start;
-  width: min(100%, 260px);
+  width: min(100%, 420px);
+}
+
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.earnings-panel {
+  margin-top: 0;
+  padding-left: 0.7rem;
+  border-left: 1px solid var(--border);
+}
+
+.earnings-panel h3 {
+  margin: 0 0 0.45rem;
+  font-size: 0.9rem;
+}
+
+.earnings-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.earnings-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.86rem;
+}
+
+.earnings-name {
+  margin-right: auto;
+}
+
+.earnings-value {
+  font-weight: 700;
 }
 
 .planner-topbar {
@@ -306,6 +347,10 @@ button:focus-visible {
   font-size: 0.78rem;
 }
 
+.task-payment-input {
+  appearance: textfield;
+}
+
 .empty-day {
   margin: 0;
   color: var(--text-soft);
@@ -321,6 +366,17 @@ button:focus-visible {
   .legend-card {
     width: 100%;
     justify-self: stretch;
+  }
+
+  .legend-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .earnings-panel {
+    padding-left: 0;
+    padding-top: 0.7rem;
+    border-left: 0;
+    border-top: 1px solid var(--border);
   }
 }
 

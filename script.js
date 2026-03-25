@@ -23,8 +23,10 @@ const taskNameInput = document.getElementById("task-name");
 const taskPersonInput = document.getElementById("task-person");
 const taskDayInput = document.getElementById("task-day");
 const taskStatusInput = document.getElementById("task-status");
+const taskPaymentInput = document.getElementById("task-payment");
 const weeklyBoard = document.getElementById("weekly-board");
 const legend = document.getElementById("legend");
+const earningsList = document.getElementById("earnings");
 const clearCompletedButton = document.getElementById("clear-completed");
 const taskTemplate = document.getElementById("task-template");
 
@@ -50,6 +52,7 @@ function handleCreateTask(event) {
   const person = taskPersonInput.value;
   const day = taskDayInput.value;
   const status = taskStatusInput.value;
+  const payment = sanitizePayment(taskPaymentInput.value);
 
   if (!name) {
     taskNameInput.focus();
@@ -62,6 +65,7 @@ function handleCreateTask(event) {
     person,
     day,
     status,
+    payment,
   };
 
   tasks.unshift(newTask);
@@ -85,6 +89,23 @@ function renderLegend() {
       <span>${member.name}</span>
     `;
     legend.appendChild(li);
+  });
+
+  renderEarnings();
+}
+
+function renderEarnings() {
+  earningsList.innerHTML = "";
+  const totals = calculateEarningsByPerson();
+  FAMILY.forEach((member) => {
+    const li = document.createElement("li");
+    li.className = "earnings-item";
+    li.innerHTML = `
+      <span class="legend-dot" style="background: ${member.color}"></span>
+      <span class="earnings-name">${member.name}</span>
+      <strong class="earnings-value">£${totals[member.name]}</strong>
+    `;
+    earningsList.appendChild(li);
   });
 }
 
@@ -145,6 +166,7 @@ function buildTaskNode(task) {
   const statusSelect = fragment.querySelector(".task-status-select");
   const personSelect = fragment.querySelector(".task-person-select");
   const daySelect = fragment.querySelector(".task-day-select");
+  const paymentInput = fragment.querySelector(".task-payment-input");
   const personMeta = FAMILY.find((member) => member.name === task.person);
 
   card.dataset.taskId = task.id;
@@ -163,6 +185,7 @@ function buildTaskNode(task) {
     task.person,
   );
   populateSelect(daySelect, DAYS, task.day);
+  paymentInput.value = task.payment ?? 0;
 
   if (task.status === "Done") {
     card.classList.add("task-done");
@@ -176,6 +199,9 @@ function buildTaskNode(task) {
   });
   daySelect.addEventListener("change", (event) => {
     updateTask(task.id, { day: event.target.value });
+  });
+  paymentInput.addEventListener("change", (event) => {
+    updateTask(task.id, { payment: sanitizePayment(event.target.value) });
   });
   renameBtn.addEventListener("click", () => renameTask(task));
   deleteBtn.addEventListener("click", () => deleteTask(task.id));
@@ -258,6 +284,7 @@ function updateTask(taskId, patch) {
 
 function saveAndRender() {
   saveTasks(tasks);
+  renderEarnings();
   renderBoard();
 }
 
@@ -275,7 +302,7 @@ function loadTasks() {
     if (!Array.isArray(parsed)) {
       return seedTasks();
     }
-    return parsed.filter(isTaskShapeValid);
+    return parsed.map(normalizeTask).filter(Boolean);
   } catch (error) {
     return seedTasks();
   }
@@ -289,6 +316,7 @@ function seedTasks() {
       person: "Mum",
       day: "Monday",
       status: "To do",
+      payment: 5,
     },
     {
       id: crypto.randomUUID(),
@@ -296,6 +324,7 @@ function seedTasks() {
       person: "Dad",
       day: "Tuesday",
       status: "Doing",
+      payment: 4,
     },
     {
       id: crypto.randomUUID(),
@@ -303,6 +332,7 @@ function seedTasks() {
       person: "Son",
       day: "Tuesday",
       status: "Done",
+      payment: 3,
     },
   ];
 }
@@ -319,4 +349,37 @@ function isTaskShapeValid(task) {
 
 function countTasksForDay(day) {
   return tasks.filter((task) => task.day === day).length;
+}
+
+function sanitizePayment(rawValue) {
+  const numeric = Number.parseInt(rawValue, 10);
+  if (!Number.isFinite(numeric) || numeric < 0) {
+    return 0;
+  }
+  return numeric;
+}
+
+function normalizeTask(task) {
+  if (!isTaskShapeValid(task)) {
+    return null;
+  }
+  return {
+    ...task,
+    payment: sanitizePayment(task.payment),
+  };
+}
+
+function calculateEarningsByPerson() {
+  const totals = FAMILY.reduce((acc, member) => {
+    acc[member.name] = 0;
+    return acc;
+  }, {});
+
+  tasks.forEach((task) => {
+    if (task.status === "Done") {
+      totals[task.person] += task.payment ?? 0;
+    }
+  });
+
+  return totals;
 }
