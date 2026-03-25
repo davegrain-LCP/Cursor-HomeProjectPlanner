@@ -402,6 +402,19 @@ button:focus-visible {
   font-size: 0.74rem;
 }
 
+.app.compact-mode .task-card.compact-expanded .task-actions,
+.app.compact-mode .task-card.compact-expanded .task-controls {
+  display: flex;
+}
+
+.app.compact-mode .task-card.compact-expanded .task-controls {
+  display: grid;
+}
+
+.app.compact-mode .task-card.compact-expanded .task-assignee {
+  font-size: 0.8rem;
+}
+
 .empty-day {
   margin: 0;
   color: var(--text-soft);

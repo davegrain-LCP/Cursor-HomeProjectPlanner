@@ -35,6 +35,7 @@ const appRoot = document.querySelector(".app");
 const COMPACT_MODE_KEY = "family-housekeeping-compact-mode";
 
 let tasks = loadTasks();
+let expandedTaskIds = new Set();
 
 init();
 
@@ -179,6 +180,11 @@ function buildTaskNode(task) {
   card.style.borderLeft = `6px solid ${personMeta.color}`;
   card.addEventListener("dragstart", onTaskDragStart);
   card.addEventListener("dragend", onTaskDragEnd);
+  card.addEventListener("dblclick", (event) => onTaskCardDoubleClick(event, task.id));
+
+  if (expandedTaskIds.has(task.id)) {
+    card.classList.add("expanded");
+  }
 
   taskName.textContent = task.name;
   taskAssignee.textContent = `Assigned to ${task.person}`;
@@ -229,6 +235,7 @@ function renameTask(task) {
 
 function deleteTask(taskId) {
   tasks = tasks.filter((task) => task.id !== taskId);
+  expandedTaskIds.delete(taskId);
   saveAndRender();
 }
 
@@ -289,6 +296,7 @@ function updateTask(taskId, patch) {
 }
 
 function saveAndRender() {
+  pruneExpandedTaskIds();
   saveTasks(tasks);
   renderEarnings();
   renderBoard();
@@ -314,6 +322,9 @@ function loadCompactModePreference() {
 }
 
 function applyCompactMode(isCompact) {
+  if (!isCompact) {
+    expandedTaskIds.clear();
+  }
   appRoot.classList.toggle("compact-mode", isCompact);
   updateCompactButtonLabel(isCompact);
 }
@@ -321,6 +332,27 @@ function applyCompactMode(isCompact) {
 function updateCompactButtonLabel(isCompact) {
   compactToggleButton.textContent = isCompact ? "Compact mode: On" : "Compact mode: Off";
   compactToggleButton.setAttribute("aria-pressed", String(isCompact));
+}
+
+function onTaskCardDoubleClick(event, taskId) {
+  if (!appRoot.classList.contains("compact-mode")) {
+    return;
+  }
+  if (event.target.closest("button, select, input")) {
+    return;
+  }
+  const card = event.currentTarget;
+  const isExpanded = card.classList.toggle("expanded");
+  if (isExpanded) {
+    expandedTaskIds.add(taskId);
+  } else {
+    expandedTaskIds.delete(taskId);
+  }
+}
+
+function pruneExpandedTaskIds() {
+  const validTaskIds = new Set(tasks.map((task) => task.id));
+  expandedTaskIds = new Set([...expandedTaskIds].filter((taskId) => validTaskIds.has(taskId)));
 }
 
 function loadTasks() {
