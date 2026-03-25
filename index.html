@@ -76,9 +76,14 @@
       <section class="planner-section">
         <div class="planner-topbar">
           <h2>Weekly Planner</h2>
-          <button id="clear-completed" type="button" class="btn btn-secondary">
-            Remove done tasks
-          </button>
+          <div class="planner-actions">
+            <button id="compact-toggle" type="button" class="btn btn-secondary" aria-pressed="false">
+              Compact mode: Off
+            </button>
+            <button id="clear-completed" type="button" class="btn btn-secondary">
+              Remove done tasks
+            </button>
+          </div>
         </div>
         <p class="hint">
           Drag and drop task cards between days, or use each task's day selector.

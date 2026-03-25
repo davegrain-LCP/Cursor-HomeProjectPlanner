@@ -28,7 +28,11 @@ const weeklyBoard = document.getElementById("weekly-board");
 const legend = document.getElementById("legend");
 const earningsList = document.getElementById("earnings");
 const clearCompletedButton = document.getElementById("clear-completed");
+const compactToggleButton = document.getElementById("compact-toggle");
 const taskTemplate = document.getElementById("task-template");
+const appRoot = document.querySelector(".app");
+
+const COMPACT_MODE_KEY = "family-housekeeping-compact-mode";
 
 let tasks = loadTasks();
 
@@ -38,11 +42,13 @@ function init() {
   populateSelect(taskPersonInput, FAMILY.map((member) => member.name));
   populateSelect(taskDayInput, DAYS);
   populateSelect(taskStatusInput, STATUSES);
+  applyCompactMode(loadCompactModePreference());
   renderLegend();
   renderBoard();
 
   taskForm.addEventListener("submit", handleCreateTask);
   clearCompletedButton.addEventListener("click", removeDoneTasks);
+  compactToggleButton.addEventListener("click", toggleCompactMode);
 }
 
 function handleCreateTask(event) {
@@ -290,6 +296,31 @@ function saveAndRender() {
 
 function saveTasks(nextTasks) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(nextTasks));
+}
+
+function toggleCompactMode() {
+  const isCompact = appRoot.classList.toggle("compact-mode");
+  localStorage.setItem(COMPACT_MODE_KEY, JSON.stringify(isCompact));
+  updateCompactButtonLabel(isCompact);
+}
+
+function loadCompactModePreference() {
+  try {
+    const raw = localStorage.getItem(COMPACT_MODE_KEY);
+    return raw ? JSON.parse(raw) === true : false;
+  } catch (error) {
+    return false;
+  }
+}
+
+function applyCompactMode(isCompact) {
+  appRoot.classList.toggle("compact-mode", isCompact);
+  updateCompactButtonLabel(isCompact);
+}
+
+function updateCompactButtonLabel(isCompact) {
+  compactToggleButton.textContent = isCompact ? "Compact mode: On" : "Compact mode: Off";
+  compactToggleButton.setAttribute("aria-pressed", String(isCompact));
 }
 
 function loadTasks() {
