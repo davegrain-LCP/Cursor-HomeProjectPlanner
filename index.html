@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Family Housekeeping Planner</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="app-header">
+        <div>
+          <h1>Family Housekeeping Planner</h1>
+          <p>Plan, assign, and track chores for Mum, Dad, Daughter, and Son.</p>
+        </div>
+      </header>
+
+      <section class="card form-card" aria-labelledby="new-task-title">
+        <h2 id="new-task-title">Create a Task</h2>
+        <form id="task-form" class="task-form">
+          <label>
+            Task name
+            <input
+              id="task-name"
+              name="name"
+              type="text"
+              maxlength="100"
+              placeholder="e.g. Vacuum living room"
+              required
+            />
+          </label>
+
+          <label>
+            Assigned person
+            <select id="task-person" name="person" required></select>
+          </label>
+
+          <label>
+            Assigned day
+            <select id="task-day" name="day" required></select>
+          </label>
+
+          <label>
+            Status
+            <select id="task-status" name="status" required></select>
+          </label>
+
+          <button type="submit" class="btn btn-primary">Add task</button>
+        </form>
+      </section>
+
+      <section class="card legend-card" aria-labelledby="legend-title">
+        <h2 id="legend-title">Family Colors</h2>
+        <ul id="legend" class="legend-list" aria-label="Family member color legend"></ul>
+      </section>
+
+      <section class="planner-section">
+        <div class="planner-topbar">
+          <h2>Weekly Planner</h2>
+          <button id="clear-completed" type="button" class="btn btn-secondary">
+            Remove done tasks
+          </button>
+        </div>
+        <p class="hint">
+          Drag and drop task cards between days, or use each task's day selector.
+        </p>
+        <div id="weekly-board" class="weekly-board" aria-live="polite"></div>
+      </section>
+    </div>
+
+    <template id="task-template">
+      <article class="task-card" draggable="true">
+        <div class="task-card-header">
+          <h3 class="task-name"></h3>
+          <div class="task-actions">
+            <button type="button" class="icon-btn rename-btn" title="Rename task" aria-label="Rename task">
+              Rename
+            </button>
+            <button type="button" class="icon-btn delete-btn" title="Delete task" aria-label="Delete task">
+              Delete
+            </button>
+          </div>
+        </div>
+        <p class="task-assignee"></p>
+        <div class="task-controls">
+          <label>
+            Status
+            <select class="task-status-select"></select>
+          </label>
+          <label>
+            Person
+            <select class="task-person-select"></select>
+          </label>
+          <label>
+            Day
+            <select class="task-day-select"></select>
+          </label>
+        </div>
+      </article>
+    </template>
+
+    <script src="script.js"></script>
+  </body>
+</html>
