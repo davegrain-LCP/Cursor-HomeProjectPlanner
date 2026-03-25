@@ -170,9 +170,10 @@ button:focus-visible {
 
 .weekly-board {
   display: grid;
-  grid-template-columns: repeat(7, minmax(170px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 0.65rem;
-  overflow-x: auto;
+  align-items: start;
+  overflow-x: visible;
   padding-bottom: 0.25rem;
 }
 
@@ -190,6 +191,7 @@ button:focus-visible {
   border-bottom: 1px solid var(--border);
   padding: 0.65rem 0.75rem;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 0.4rem;
@@ -204,6 +206,7 @@ button:focus-visible {
 .task-count {
   color: var(--text-soft);
   font-size: 0.8rem;
+  white-space: nowrap;
 }
 
 .task-list {
@@ -250,6 +253,7 @@ button:focus-visible {
 
 .task-card-header {
   display: flex;
+  flex-wrap: wrap;
   align-items: start;
   justify-content: space-between;
   gap: 0.45rem;
@@ -262,6 +266,7 @@ button:focus-visible {
 
 .task-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.25rem;
 }
 
@@ -304,10 +309,6 @@ button:focus-visible {
 @media (max-width: 980px) {
   .app {
     grid-template-columns: 1fr;
-  }
-
-  .weekly-board {
-    grid-template-columns: repeat(7, minmax(220px, 1fr));
   }
 }
 
