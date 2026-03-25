@@ -292,9 +292,9 @@ button:focus-visible {
   border: 1px solid var(--border);
   border-left-width: 6px;
   border-radius: 12px;
-  padding: 0.55rem;
+  padding: 0.45rem;
   display: grid;
-  gap: 0.5rem;
+  gap: 0.35rem;
 }
 
 .task-card.dragging {
@@ -310,12 +310,12 @@ button:focus-visible {
   flex-wrap: wrap;
   align-items: start;
   justify-content: space-between;
-  gap: 0.45rem;
+  gap: 0.3rem;
 }
 
 .task-name {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .task-actions {
@@ -329,8 +329,8 @@ button:focus-visible {
   border-radius: 8px;
   background: #fff;
   color: var(--text-soft);
-  padding: 0.25rem 0.45rem;
-  font-size: 0.78rem;
+  padding: 0.18rem 0.4rem;
+  font-size: 0.72rem;
   cursor: pointer;
 }
 
@@ -341,16 +341,24 @@ button:focus-visible {
 .task-assignee {
   margin: 0;
   color: var(--text-soft);
-  font-size: 0.84rem;
+  font-size: 0.8rem;
 }
 
 .task-controls {
   display: grid;
-  gap: 0.45rem;
+  gap: 0.3rem;
 }
 
 .task-controls label {
-  font-size: 0.78rem;
+  gap: 0.2rem;
+  font-size: 0.74rem;
+}
+
+.task-controls input,
+.task-controls select {
+  padding: 0.38rem 0.5rem;
+  border-radius: 8px;
+  font-size: 0.84rem;
 }
 
 .task-payment-input {
