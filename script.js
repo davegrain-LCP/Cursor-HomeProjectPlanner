@@ -57,7 +57,7 @@ function handleCreateTask(event) {
   }
 
   const newTask = {
-    id: crypto.randomUUID(),
+    id: createTaskId(),
     name,
     person,
     day,
@@ -269,36 +269,55 @@ function loadTasks() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {
-      return seedTasks();
+      const seeded = seedTasks();
+      saveTasks(seeded);
+      return seeded;
     }
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) {
-      return seedTasks();
+      const seeded = seedTasks();
+      saveTasks(seeded);
+      return seeded;
     }
-    return parsed.filter(isTaskShapeValid);
+    const sanitized = parsed.filter(isTaskShapeValid);
+    if (!sanitized.length) {
+      const seeded = seedTasks();
+      saveTasks(seeded);
+      return seeded;
+    }
+    return sanitized;
   } catch (error) {
-    return seedTasks();
+    const seeded = seedTasks();
+    saveTasks(seeded);
+    return seeded;
   }
 }
 
 function seedTasks() {
   return [
     {
-      id: crypto.randomUUID(),
+      id: createTaskId(),
       name: "Vacuum living room",
       person: "Mum",
       day: "Monday",
       status: "To do",
     },
     {
-      id: crypto.randomUUID(),
+      id: createTaskId(),
       name: "Wash dishes",
       person: "Dad",
       day: "Tuesday",
       status: "Doing",
     },
     {
-      id: crypto.randomUUID(),
+      id: createTaskId(),
+      name: "Laundry",
+      person: "Daughter",
+      day: "Wednesday",
+      status: "To do",
+    },
+    {
+      id: createTaskId(),
       name: "Take out trash",
       person: "Son",
       day: "Tuesday",
@@ -319,4 +338,11 @@ function isTaskShapeValid(task) {
 
 function countTasksForDay(day) {
   return tasks.filter((task) => task.day === day).length;
+}
+
+function createTaskId() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  return `task-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }

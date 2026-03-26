@@ -322,6 +322,15 @@ button:focus-visible {
     width: 100%;
     justify-self: stretch;
   }
+
+  .weekly-board {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow-x: visible;
+  }
+
+  .day-column {
+    min-height: 240px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -340,11 +349,16 @@ button:focus-visible {
   }
 
   .weekly-board {
-    grid-template-columns: repeat(7, minmax(200px, 1fr));
-    overflow-x: auto;
+    grid-template-columns: 1fr;
+    overflow-x: visible;
   }
 
   .day-column {
     min-height: auto;
+  }
+
+  .icon-btn {
+    padding: 0.35rem 0.55rem;
+    font-size: 0.82rem;
   }
 }
